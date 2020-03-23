@@ -78,7 +78,7 @@ public class  Registeractivity extends AppCompatActivity {
             Toast.makeText(Registeractivity.this,"Registration failed,please enter all the details",Toast.LENGTH_SHORT).show();
         }
         else{
-           
+
             result=true;
 
         }
