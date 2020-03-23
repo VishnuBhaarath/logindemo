@@ -68,13 +68,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    startActivity(new Intent(MainActivity.this,SecondActivity.class));
+                    //startActivity(new Intent(MainActivity.this,SecondActivity.class));
+                    checkemailverification();
                 }
                 else{
                     Toast.makeText(MainActivity.this,"Login failed"+ userName+ userPassword,Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+    private void checkemailverification(){
+        FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
+        Boolean emailflag=firebaseUser.isEmailVerified();
+        if(emailflag){
+            startActivity(new Intent(MainActivity.this,SecondActivity.class));
+        }
+        else{
+            Toast.makeText(MainActivity.this,"Verify your mail",Toast.LENGTH_SHORT).show();
+            firebaseAuth.signOut();
+        }
     }
 
 

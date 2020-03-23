@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class  Registeractivity extends AppCompatActivity {
  EditText useremail,userpassword,userconfirmpassword,username;
@@ -39,9 +40,7 @@ public class  Registeractivity extends AppCompatActivity {
                       @Override
                       public void onComplete(@NonNull Task<AuthResult> task) {
                           if(task.isSuccessful()){
-
-                              Toast.makeText(Registeractivity.this,"Registration successfull",Toast.LENGTH_SHORT).show();
-                              startActivity(new Intent(Registeractivity.this,MainActivity.class));
+                              sendverificationmail();
                           }
                           else{
                               Toast.makeText(Registeractivity.this,"Not successfull",Toast.LENGTH_SHORT).show();
@@ -83,5 +82,21 @@ public class  Registeractivity extends AppCompatActivity {
 
         }
         return result;
+    }
+    private void sendverificationmail(){
+        FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
+        if(firebaseUser!=null){
+            firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(Registeractivity.this,"Successfully send, mail send",Toast.LENGTH_SHORT).show();
+                        firebaseAuth.signOut();
+                        finish();
+                        startActivity(new Intent(Registeractivity.this,MainActivity.class));
+                    }
+                }
+            });
+        }
     }
 }
