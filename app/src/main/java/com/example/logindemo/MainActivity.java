@@ -18,11 +18,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-    EditText email,password;
-    Button login;
-    TextView register;
-    FirebaseAuth firebaseAuth;
-    Boolean result;
+ private    EditText email,password;
+   private Button login;
+    private TextView register;
+    private FirebaseAuth firebaseAuth;
+    private Boolean result;
+    private Button resetpassword;
     private int counter=5;
 
     @Override
@@ -32,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.etname);
         password = (EditText) findViewById(R.id.etepassword);
         firebaseAuth=FirebaseAuth.getInstance();
+       resetpassword=(Button)findViewById(R.id.btpasswordreset);
+       resetpassword.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               startActivity(new Intent(MainActivity.this,passwordreset.class));
+           }
+       });
         final FirebaseUser user=firebaseAuth.getCurrentUser();
        if(user!=null){
            finish();
