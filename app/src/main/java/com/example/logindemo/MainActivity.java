@@ -33,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.etepassword);
         firebaseAuth=FirebaseAuth.getInstance();
         final FirebaseUser user=firebaseAuth.getCurrentUser();
-
+       if(user!=null){
+           finish();
+           startActivity(new Intent(MainActivity.this,SecondActivity.class));
+       }
 
         login = (Button) findViewById(R.id.btlogin);
         register=(TextView) findViewById(R.id.register);
