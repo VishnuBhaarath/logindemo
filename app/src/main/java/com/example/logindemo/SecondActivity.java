@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SecondActivity extends AppCompatActivity {
-    private Button logout;
+    private Button logout,profile;
     private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +18,13 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.secondactivity);
         firebaseAuth=FirebaseAuth.getInstance();
         logout=(Button)findViewById(R.id.logout);
+        profile=(Button)findViewById(R.id.btprofile);
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SecondActivity.this,displayprofile.class));
+            }
+        });
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
