@@ -16,13 +16,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class  Registeractivity extends AppCompatActivity {
- EditText useremail,userpassword,userconfirmpassword,username;
+ EditText useremail,userpassword,userconfirmpassword,username,userage;
   Button register;
   TextView uslogin;
   private FirebaseAuth firebaseAuth;
-
+ String password,confpassword,name,emailid,age;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,14 +67,16 @@ public class  Registeractivity extends AppCompatActivity {
         useremail=(EditText)findViewById(R.id.etemail);
         userpassword=(EditText)findViewById(R.id.Password);
         username=(EditText)findViewById(R.id.Name);
+        userage=(EditText)findViewById(R.id.age);
         userconfirmpassword=(EditText)findViewById(R.id.confPassword);
     }
     private Boolean validate(){
         Boolean result=false;
-        String emailid=useremail.getText().toString().trim();
-        String password=userpassword.getText().toString().trim();
-        String confpassword=userconfirmpassword.getText().toString().trim();
-        String name=username.getText().toString().trim();
+       emailid=useremail.getText().toString().trim();
+       password=userpassword.getText().toString().trim();
+         confpassword=userconfirmpassword.getText().toString().trim();
+         name=username.getText().toString().trim();
+         age=userage.getText().toString().trim();
         if(emailid.isEmpty()|| password.isEmpty() || confpassword.isEmpty() || name.isEmpty()){
             Toast.makeText(Registeractivity.this,"Registration failed,please enter all the details",Toast.LENGTH_SHORT).show();
         }
@@ -90,6 +94,7 @@ public class  Registeractivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
+                        senduserdata();
                         Toast.makeText(Registeractivity.this,"Successfully send, mail send",Toast.LENGTH_SHORT).show();
                         firebaseAuth.signOut();
                         finish();
@@ -98,5 +103,12 @@ public class  Registeractivity extends AppCompatActivity {
                 }
             });
         }
+    }
+    private void senduserdata(){
+        FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+        DatabaseReference myref=firebaseDatabase.getReference(firebaseAuth.getUid());
+        UserProfile userProfile= new UserProfile(name,age);
+        myref.setValue(userProfile);
+
     }
 }
